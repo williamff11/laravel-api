@@ -25,7 +25,7 @@ class StoreUpdateProductFormRequest extends FormRequest
     {
         $id = $this->segment(3);
         return [
-            'category_id'   => "required|exists:categories,id",
+            'category_id'   => "required|exists:categories_id",
             'name'          => "required|min:3|max:100|unique:products,name,{$id},id",
             'description'   => "max:1000",
             'image'         => "image",
