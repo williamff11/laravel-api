@@ -7,7 +7,11 @@ definer_user=mysql.sys
 definer_host=localhost
 suid=0
 with_check_option=0
+<<<<<<< HEAD
 timestamp=2019-12-29 20:54:18
+=======
+timestamp=2019-12-30 12:30:11
+>>>>>>> 5ac175d489d2f63aa78697bca7aee11b333682d6
 create-version=1
 source=SELECT file_name AS file,  count_read,  sum_number_of_bytes_read AS total_read, IFNULL(sum_number_of_bytes_read / NULLIF(count_read, 0), 0) AS avg_read, count_write,  sum_number_of_bytes_write AS total_written, IFNULL(sum_number_of_bytes_write / NULLIF(count_write, 0), 0.00) AS avg_write, sum_number_of_bytes_read + sum_number_of_bytes_write AS total,  IFNULL(ROUND(100-((sum_number_of_bytes_read/ NULLIF((sum_number_of_bytes_read+sum_number_of_bytes_write), 0))*100), 2), 0.00) AS write_pct  FROM performance_schema.file_summary_by_instance ORDER BY sum_number_of_bytes_read + sum_number_of_bytes_write DESC
 client_cs_name=utf8

@@ -7,7 +7,11 @@ definer_user=mysql.sys
 definer_host=localhost
 suid=0
 with_check_option=0
+<<<<<<< HEAD
 timestamp=2019-12-29 20:54:19
+=======
+timestamp=2019-12-30 12:30:15
+>>>>>>> 5ac175d489d2f63aa78697bca7aee11b333682d6
 create-version=1
 source=SELECT SUM(CURRENT_NUMBER_OF_BYTES_USED) total_allocated FROM performance_schema.memory_summary_global_by_event_name
 client_cs_name=utf8

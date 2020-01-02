@@ -7,7 +7,11 @@ definer_user=mysql.sys
 definer_host=localhost
 suid=0
 with_check_option=0
+<<<<<<< HEAD
 timestamp=2019-12-29 20:54:23
+=======
+timestamp=2019-12-30 12:30:22
+>>>>>>> 5ac175d489d2f63aa78697bca7aee11b333682d6
 create-version=1
 source=SELECT SUBSTRING_INDEX(event_name,\'/\', 3) AS event_class, SUM(COUNT_STAR) AS total, sys.format_time(CAST(SUM(sum_timer_wait) AS UNSIGNED)) AS total_latency, sys.format_time(MIN(min_timer_wait)) AS min_latency, sys.format_time(IFNULL(SUM(sum_timer_wait) / NULLIF(SUM(COUNT_STAR), 0), 0)) AS avg_latency, sys.format_time(CAST(MAX(max_timer_wait) AS UNSIGNED)) AS max_latency FROM performance_schema.events_waits_summary_global_by_event_name WHERE sum_timer_wait > 0 AND event_name != \'idle\' GROUP BY event_class ORDER BY IFNULL(SUM(sum_timer_wait) / NULLIF(SUM(COUNT_STAR), 0), 0) DESC
 client_cs_name=utf8
