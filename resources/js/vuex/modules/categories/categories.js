@@ -10,7 +10,7 @@ export default {
         }
     },
     actions: {
-        loadCategories (context) {
+        loadCategories(context) {
             context.commit('CHANGE_PRELOADER', true)
 
             axios
@@ -24,7 +24,18 @@ export default {
                     console.log(errors);
                 })
                 .finally(() => context.commit('CHANGE_PRELOADER', false))
-        }
+        },
+
+        store(context, params) {
+            context.commit('CHANGE_PRELOADER', true)
+
+            return new Promise((resolve, reject) => {
+                axios.post('/api/v1/categories', params)
+                    .then(response => resolve())
+                    .catch(errors => reject(errors))
+                    .finally(() => context.commit('CHANGE_PRELOADER', false))
+            })
+        },
     },
     getters: {
 
