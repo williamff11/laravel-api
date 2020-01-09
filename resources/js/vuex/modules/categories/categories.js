@@ -10,11 +10,11 @@ export default {
         }
     },
     actions: {
-        loadCategories(context) {
+        loadCategories(context, params) {
             context.commit('CHANGE_PRELOADER', true)
 
             axios
-                .get("/api/v1/categories")
+                .get("/api/v1/categories", {params})
                 .then(response => {
                     console.log(response);
 
@@ -56,6 +56,16 @@ export default {
                     .then(response => resolve())
                     .catch(errors => reject(errors))
                     .finally(() => context.commit('CHANGE_PRELOADER', false))
+            })
+        },
+        deleteCategory(context, id) {
+            context.commit('CHANGE_PRELOADER', true)
+
+            return new Promise((resolve, reject) => {
+                axios.delete(`/api/v1/categories/${id}`)
+                    .then(response => resolve())
+                    .catch(errors => reject(errors))
+                  // para o preloader carregar as categorias apos deletar  .finally(() => context.commit('CHANGE_PRELOADER', false))
             })
         },
     },

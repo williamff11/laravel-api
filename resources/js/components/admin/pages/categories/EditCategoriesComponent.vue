@@ -18,17 +18,24 @@ export default {
     formCategory: FormCategoryComponent
   },
   created() {
-    this.$store
-      .dispatch("loadCategory", this.id)
-      .then(response => (this.category = response))
-      .catch(errors => {
-        console.log(errors);
-      });
+    this.loadCategory();
   },
-  data () {
-      return {
-          category: {}
-      }
+  data() {
+    return {
+      category: {}
+    };
+  },
+  methods: {
+    loadCategory() {
+      this.$store
+        .dispatch("loadCategory", this.id)
+        .then(response => (this.category = response))
+        .catch(errors => {
+          console.log(errors);
+          this.$snotify.error("Categoria não Encontrada", "404");
+          this.$router.push({ name: "admin.categories" });
+        });
+    }
   }
 };
 </script>
