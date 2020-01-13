@@ -1,41 +1,50 @@
 <template>
   <div>
-    <h1>Listagem das Categorias</h1>
-    <div class="row">
-      <div class="col">
-        <router-link :to="{name: 'admin.categories.create'}" class="btn btn-success">Cadastrar</router-link>
-      </div>
-      <div class="col">
-        <search @searchCategoryComponent="search"></search>
+    <br />
+    <div class="container col-sm-11 offset-md">
+      <div class="card border shadow">
+        <div class="card-header linha">
+          <h2 class="card-title col">Listagem das Categorias</h2>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <router-link :to="{name: 'admin.categories.create'}" class="btn btn-success">Cadastrar</router-link>
+            </div>
+            <div class="col">
+              <search @searchCategoryComponent="search"></search>
+            </div>
+          </div>
+          <table class="table table-hover">
+            <thead class="thead-light">
+              <tr>
+                <th>#</th>
+                <th>Nome</th>
+                <th width="200px">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(category, index) in categories.data" :key="index">
+                <td>{{ category.id }}</td>
+                <td>{{ category.name }}</td>
+                <td>
+                  <router-link
+                    :to="{name: 'admin.categories.edit', params: {id: category.id}}"
+                    class="btn btn-info"
+                  >Editar</router-link>
+                  <button
+                    type="submit"
+                    @click.prevent="confirmDeleteCategory(category)"
+                    :to="{name: 'admin.categories.delete', params: {id: category.id}}"
+                    class="btn btn-danger"
+                  >Deletar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-    <table class="table table-dark">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Nome</th>
-          <th width="200px">Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(category, index) in categories.data" :key="index">
-          <td>{{ category.id }}</td>
-          <td>{{ category.name }}</td>
-          <td>
-            <router-link
-              :to="{name: 'admin.categories.edit', params: {id: category.id}}"
-              class="btn btn-warning"
-            >Editar</router-link>
-            <button
-              type="submit"
-              @click.prevent="confirmDeleteCategory(category)"
-              :to="{name: 'admin.categories.delete', params: {id: category.id}}"
-              class="btn btn-danger"
-            >Deletar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 </template>
 
@@ -101,10 +110,10 @@ export default {
         }
       );
     },
-    search (filter) {
-      this.name = filter
+    search(filter) {
+      this.name = filter;
 
-      this.loadCategories()
+      this.loadCategories();
     }
   },
   props: {

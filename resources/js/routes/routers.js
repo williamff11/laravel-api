@@ -6,6 +6,7 @@ import CategoriesComponent from '../components/admin/pages/categories/Categories
 import DashboardComponent from '../components/admin/pages/dashboard/DashboardComponent'
 import AddCategoriesComponent from '../components/admin/pages/categories/AddCategoriesComponent'
 import EditCategoriesComponent from '../components/admin/pages/categories/EditCategoriesComponent'
+import ProductsComponent from '../components/admin/pages/products/ProductsComponent'
 
 
 Vue.use(VueRouter)
@@ -19,6 +20,8 @@ const routes = [
             { path: 'categorias', component: CategoriesComponent, name: 'admin.categories' },
             { path: 'categorias/create', component: AddCategoriesComponent, name: 'admin.categories.create' },
             { path: 'categorias/:id/edit', component: EditCategoriesComponent, name: 'admin.categories.edit', props: true },
+
+            {path: 'products', component: ProductsComponent, name: 'admin.products'}
         ]
     },
 ]
