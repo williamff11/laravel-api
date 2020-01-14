@@ -6,18 +6,19 @@
         <div class="card-header">
           <h2 class="card-title">Listagem de Produtos</h2>
           <div class="row">
-              <div class="col">
-                  <button class="btn btn-success" @click.prevent="showModal = true">Novo</button>
+            <div class="col">
+              <button class="btn btn-success" @click.prevent="showModal = true">Novo</button>
 
-                  <vodal
-                  :show="showModal"
-                  animation="fade"
-                  @hide="hideModal"
-                  :width="600"
-                  :height="500">
-                  <productForm></productForm>
-                  </vodal>
-              </div>
+              <vodal
+                :show="showModal"
+                animation="fade"
+                @hide="hideModal"
+                :width="600"
+                :height="500"
+              >
+                <productForm :product="product" :update="update" @success="success"></productForm>
+              </vodal>
+            </div>
             <div class="col">
               <search @search="searchForm"></search>
             </div>
@@ -37,14 +38,14 @@
                 <td>...</td>
                 <td>{{ product.name }}</td>
                 <td>
-                  <a href="#" class="btn btn-info">Editar</a>
+                  <a href="#" @click.prevent="edit(product.id)" class="btn btn-info">Editar</a>
                   <a href="#" class="btn btn-danger">Deletar</a>
                 </td>
               </tr>
             </tbody>
           </table>
 
-          <pagination :pagination="products" :offset="6" @paginate="loadProducts"></pagination>
+          <pagination :pagination="products" :offset="products.last_page" @paginate="loadProducts"></pagination>
         </div>
       </div>
     </div>
@@ -52,12 +53,11 @@
 </template>
 
 <script>
-import Vodal from 'vodal'
-
+import Vodal from "vodal";
 
 import PaginationComponent from "../../../layouts/PaginationComponent";
 import SearchComponent from "../../layouts/SearchComponent";
-import ProductForm from './partials/ProductForm'
+import ProductForm from "./partials/ProductForm";
 
 export default {
   created() {
@@ -67,6 +67,14 @@ export default {
     return {
       search: "",
       showModal: false,
+      product: {
+        id: "",
+        name: "",
+        description: "",
+        //   image: "",
+        category_id: ""
+      },
+      update: false,
     };
   },
   computed: {
@@ -84,20 +92,39 @@ export default {
     loadProducts(page) {
       this.$store.dispatch("loadProducts", { ...this.params, page });
     },
+    edit(id) {
+      this.$store
+        .dispatch("loadProduct", id)
+        .then(response => {
+          this.product = response;
+
+          this.showModal = true
+
+          this.update = true
+        })
+        .catch(() => {
+          this.$snotify.error(this.errors.name[0], "Error");
+        });
+    },
     searchForm(filter) {
       this.search = filter;
 
       this.loadProducts(1);
     },
-    hideModal () {
-        this.showModal = false
+    hideModal() {
+      this.showModal = false;
+    },
+    success() {
+      this.hideModal();
+
+      this.loadProducts(1);
     }
   },
   components: {
     pagination: PaginationComponent,
     search: SearchComponent,
     vodal: Vodal,
-    productForm: ProductForm,
+    productForm: ProductForm
   }
 };
 </script>

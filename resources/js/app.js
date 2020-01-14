@@ -19,3 +19,5 @@ const app = new Vue({
     store,
     el: '#app',
 });
+
+store.dispatch('loadCategories')

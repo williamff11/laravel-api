@@ -11,7 +11,7 @@ class Product extends Model
     public function getResults($filter, $totalPage)
     {
         if (!isset($filter['filter']) && !isset($filter['name']) && !isset($filter['description']))
-            return $this->paginate($totalPage);
+            return $this->orderBy('id', 'DESC')->paginate($totalPage);
 
         return $this->where(function ($query) use ($filter) {
             if (isset($filter['filter'])) {
@@ -29,6 +29,7 @@ class Product extends Model
             }
         })
             // ->toSql();dd($result);
+            ->orderBy('id', 'DESC')
             ->paginate($totalPage);
     }
 

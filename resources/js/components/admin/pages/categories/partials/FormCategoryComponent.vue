@@ -50,13 +50,13 @@ export default {
         .dispatch(action, this.category)
         .then(() => {
           this.$snotify.success("Sucesso ao Cadastrar");
+
+          this.$router.push({ name: "admin.categories" });
         })
         .catch(error => {
-
           console.log(error.response.data.errors.name);
           this.errors = error.response.data.errors;
-          this.$snotify.error(this.errors.name[0], 'Error');
-
+          this.$snotify.error(this.errors.name[0], "Error");
         });
     }
   }

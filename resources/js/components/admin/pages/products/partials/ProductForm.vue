@@ -23,6 +23,18 @@
         <div v-if="errors.description">{{ errors.description[0] }}</div>
       </div>
 
+      <div :class="['form-group', {'has-error': errors.category_id}]">
+        <select v-model="product.category_id" class="form-control">
+          <option value>Selecione a Categoria do Produto</option>
+          <option
+            v-for="(category, index) in categories"
+            :key="index"
+            :value="category.id"
+          >{{ category.name }}</option>
+        </select>
+        <div v-if="errors.category_id">{{ errors.category_id[0] }}</div>
+      </div>
+
       <div class="form-group">
         <button type="submit" class="btn btn-success">Criar</button>
       </div>
@@ -47,7 +59,7 @@ export default {
           name: "",
           description: "",
           //   image: "",
-          category_id: 1,
+          category_id: ""
         };
       }
     }
@@ -57,19 +69,37 @@ export default {
       errors: {}
     };
   },
+  computed: {
+    categories() {
+      return this.$store.state.categories.items.data;
+    }
+  },
   methods: {
     onSubmit() {
+      const action = this.update ? "updateProduct" : "storeProduct";
+
       this.$store
-        .dispatch("storeProduct", this.product)
+        .dispatch(action, this.product)
         .then(() => {
-          this.$snotify.success("Sucesso ao Cadastrar");
-          this.$router.push({ name: "admin.products" });
+          this.$snotify.success("Sucesso!");
+          this.reset();
+          this.$emit("success");
         })
         .catch(error => {
           console.log(error.response.data.errors.name);
           this.errors = error.response.data.errors;
           this.$snotify.error(this.errors.name[0], "Error");
         });
+    },
+    reset() {
+      this.errors = {};
+      this.product = {
+        id: "",
+        name: "",
+        description: "",
+        //   image: "",
+        category_id: ""
+      };
     }
   }
 };
