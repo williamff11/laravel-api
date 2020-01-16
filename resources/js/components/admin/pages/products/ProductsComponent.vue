@@ -7,7 +7,7 @@
           <h2 class="card-title">Listagem de Produtos</h2>
           <div class="row">
             <div class="col">
-              <button class="btn btn-success" @click.prevent="showModal = true">Novo</button>
+              <button class="btn btn-success" @click.prevent="create">Novo</button>
 
               <vodal
                 :show="showModal"
@@ -39,7 +39,7 @@
                 <td>{{ product.name }}</td>
                 <td>
                   <a href="#" @click.prevent="edit(product.id)" class="btn btn-info">Editar</a>
-                  <a href="#" class="btn btn-danger">Deletar</a>
+                  <buttonDelete :object="product" @destroy="deleteProduct"/>
                 </td>
               </tr>
             </tbody>
@@ -55,6 +55,7 @@
 <script>
 import Vodal from "vodal";
 
+import ButtonDestroyComponent from "../../layouts/ButtonDestroyComponent";
 import PaginationComponent from "../../../layouts/PaginationComponent";
 import SearchComponent from "../../layouts/SearchComponent";
 import ProductForm from "./partials/ProductForm";
@@ -74,7 +75,7 @@ export default {
         //   image: "",
         category_id: ""
       },
-      update: false,
+      update: false
     };
   },
   computed: {
@@ -92,18 +93,41 @@ export default {
     loadProducts(page) {
       this.$store.dispatch("loadProducts", { ...this.params, page });
     },
+    create() {
+      this.update = false;
+
+      this.reset();
+
+      this.showModal = true;
+    },
     edit(id) {
+      this.reset();
+
       this.$store
         .dispatch("loadProduct", id)
         .then(response => {
           this.product = response;
 
-          this.showModal = true
+          this.showModal = true;
 
-          this.update = true
+          this.update = true;
         })
         .catch(() => {
           this.$snotify.error(this.errors.name[0], "Error");
+        });
+    },
+
+    deleteProduct(product) {
+      this.$store
+        .dispatch("deleteProduct", product.id)
+        .then(() => {
+          this.$snotify.success(
+            `Deletado com sucesso o Produto: ${product.name} `
+          );
+          this.loadProducts();
+        })
+        .catch(error => {
+          this.$snotify.error("Error", "Error");
         });
     },
     searchForm(filter) {
@@ -118,13 +142,23 @@ export default {
       this.hideModal();
 
       this.loadProducts(1);
+    },
+    reset() {
+      this.product = {
+        id: "",
+        name: "",
+        description: "",
+        //   image: "",
+        category_id: ""
+      };
     }
   },
   components: {
     pagination: PaginationComponent,
     search: SearchComponent,
     vodal: Vodal,
-    productForm: ProductForm
+    productForm: ProductForm,
+    buttonDelete: ButtonDestroyComponent
   }
 };
 </script>

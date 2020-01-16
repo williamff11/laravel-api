@@ -2,6 +2,10 @@
   <div>
     <h2>Adicionar Produto</h2>
     <form class="form" @submit.prevent="onSubmit">
+      <div :class="['form-group', {'has-error': errors.image}]">
+        <input type="file" class="form-control" @change="onFileChange" />
+        <div v-if="errors.image">{{ errors.image[0] }}</div>
+      </div>
       <div :class="['form-group', {'has-error': errors.name}]">
         <input
           type="text"
@@ -52,21 +56,13 @@ export default {
     },
     product: {
       require: false,
-      type: Object,
-      default: () => {
-        return {
-          id: "",
-          name: "",
-          description: "",
-          //   image: "",
-          category_id: ""
-        };
-      }
+      type: Object
     }
   },
   data() {
     return {
-      errors: {}
+      errors: {},
+      upload: null
     };
   },
   computed: {
@@ -78,8 +74,18 @@ export default {
     onSubmit() {
       const action = this.update ? "updateProduct" : "storeProduct";
 
+      const formData = new FormData()
+      if (this.upload != null)
+        formData.append('image', this.upload)
+
+      formData.append('id', this.product.id)
+      formData.append('name', this.product.name)
+      formData.append('description', this.product.description)
+      formData.append('category_id', this.product.category_id)
+
+      console.log(formData)
       this.$store
-        .dispatch(action, this.product)
+        .dispatch(action, formData)
         .then(() => {
           this.$snotify.success("Sucesso!");
           this.reset();
@@ -93,13 +99,14 @@ export default {
     },
     reset() {
       this.errors = {};
-      this.product = {
-        id: "",
-        name: "",
-        description: "",
-        //   image: "",
-        category_id: ""
-      };
+    },
+    onFileChange(e) {
+      console.log(e);
+      let files = e.target.files || e.dataTransfer.files;
+      if (!files.length) 
+        return
+
+        this.upload = files[0]
     }
   }
 };

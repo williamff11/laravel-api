@@ -3,6 +3,12 @@ import { URL_BASE } from '../../../config/configs'
 
 const RESOURCE = 'products'
 
+const CONFIGS = {
+    headers: {
+        'content-type': 'multipart/form-data',
+    }
+}
+
 export default {
     loadProducts(context, params) {
         context.commit('CHANGE_PRELOADER', true)
@@ -24,11 +30,11 @@ export default {
         })
     },
 
-    storeProduct(context, params) {
+    storeProduct(context, formData) {
         context.commit('CHANGE_PRELOADER', true)
 
         return new Promise((resolve, reject) => {
-            axios.post(`${URL_BASE}${RESOURCE}`, params)
+            axios.post(`${URL_BASE}${RESOURCE}`, formData, CONFIGS)
                 .then(response => resolve())
                 .catch(error => {
                     context.commit('CHANGE_PRELOADER', false)
@@ -47,6 +53,15 @@ export default {
                     reject(error.response)
                 })
             // .finally(() => context.commit('CHANGE_PRELOADER', false))
+        })
+    },
+
+    deleteProduct(context, id) {
+        context.commit('CHANGE_PRELOADER', true)
+        return new Promise((resolve, reject) => {
+            axios.delete(`${URL_BASE}${RESOURCE}/${id}`)
+                .then(response => resolve())
+                .catch(errors => reject(errors))
         })
     },
 }
