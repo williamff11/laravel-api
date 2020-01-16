@@ -23,7 +23,7 @@ class StoreUpdateProductFormRequest extends FormRequest
      */
     public function rules()
     {
-        $id = $this->segment(3);
+        $id = $this->id;
         return [
             'category_id'   => "required|exists:categories,id",
             'name'          => "required|min:3|max:100|unique:products,name,{$id},id",

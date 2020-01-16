@@ -3,7 +3,14 @@
     <h2>Adicionar Produto</h2>
     <form class="form" @submit.prevent="onSubmit">
       <div :class="['form-group', {'has-error': errors.image}]">
-        <input type="file" class="form-control" @change="onFileChange" />
+        <div v-if="imagePreview" class="text-center">
+          <img :src="imagePreview" class="imagePreview">
+          <button @click.prevent="removeImage" class="btn btn-danger">Remover</button>
+        </div>
+        <div v-else>
+          <input type="file" class="form-control" @change="onFileChange" />
+
+        </div>
         <div v-if="errors.image">{{ errors.image[0] }}</div>
       </div>
       <div :class="['form-group', {'has-error': errors.name}]">
@@ -62,7 +69,8 @@ export default {
   data() {
     return {
       errors: {},
-      upload: null
+      upload: null,
+      imagePreview: null
     };
   },
   computed: {
@@ -74,16 +82,15 @@ export default {
     onSubmit() {
       const action = this.update ? "updateProduct" : "storeProduct";
 
-      const formData = new FormData()
-      if (this.upload != null)
-        formData.append('image', this.upload)
+      const formData = new FormData();
+      if (this.upload != null) formData.append("image", this.upload);
 
-      formData.append('id', this.product.id)
-      formData.append('name', this.product.name)
-      formData.append('description', this.product.description)
-      formData.append('category_id', this.product.category_id)
+      formData.append("id", this.product.id);
+      formData.append("name", this.product.name);
+      formData.append("description", this.product.description);
+      formData.append("category_id", this.product.category_id);
 
-      console.log(formData)
+      console.log(formData);
       this.$store
         .dispatch(action, formData)
         .then(() => {
@@ -103,10 +110,23 @@ export default {
     onFileChange(e) {
       console.log(e);
       let files = e.target.files || e.dataTransfer.files;
-      if (!files.length) 
-        return
+      if (!files.length) return;
 
-        this.upload = files[0]
+      this.upload = files[0];
+
+      this.previewImage(files[0])
+    },
+
+    previewImage(files) {
+      let reader = new FileReader();
+      reader.onload = e => {
+        this.imagePreview = e.target.result;
+      };
+      reader.readAsDataURL(files);
+    },
+    removeImage () {
+      this.imagePreview = null
+      this.upload = null
     }
   }
 };
@@ -118,5 +138,8 @@ export default {
 }
 .has-error input {
   border: 1px solid red;
+}
+.imagePreview{
+  max-width: 300px;
 }
 </style>

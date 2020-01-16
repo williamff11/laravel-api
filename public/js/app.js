@@ -2515,6 +2515,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     update: {
@@ -2530,7 +2537,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       errors: {},
-      upload: null
+      upload: null,
+      imagePreview: null
     };
   },
   computed: {
@@ -2544,11 +2552,11 @@ __webpack_require__.r(__webpack_exports__);
 
       var action = this.update ? "updateProduct" : "storeProduct";
       var formData = new FormData();
-      if (this.upload != null) formData.append('image', this.upload);
-      formData.append('id', this.product.id);
-      formData.append('name', this.product.name);
-      formData.append('description', this.product.description);
-      formData.append('category_id', this.product.category_id);
+      if (this.upload != null) formData.append("image", this.upload);
+      formData.append("id", this.product.id);
+      formData.append("name", this.product.name);
+      formData.append("description", this.product.description);
+      formData.append("category_id", this.product.category_id);
       console.log(formData);
       this.$store.dispatch(action, formData).then(function () {
         _this.$snotify.success("Sucesso!");
@@ -2571,6 +2579,22 @@ __webpack_require__.r(__webpack_exports__);
       var files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
       this.upload = files[0];
+      this.previewImage(files[0]);
+    },
+    previewImage: function previewImage(files) {
+      var _this2 = this;
+
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        _this2.imagePreview = e.target.result;
+      };
+
+      reader.readAsDataURL(files);
+    },
+    removeImage: function removeImage() {
+      this.imagePreview = null;
+      this.upload = null;
     }
   }
 });
@@ -7268,7 +7292,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../../../node_mod
 
 
 // module
-exports.push([module.i, "\n.has-error[data-v-5dab45fb] {\r\n  color: red;\n}\n.has-error input[data-v-5dab45fb] {\r\n  border: 1px solid red;\n}\r\n", ""]);
+exports.push([module.i, "\n.has-error[data-v-5dab45fb] {\r\n  color: red;\n}\n.has-error input[data-v-5dab45fb] {\r\n  border: 1px solid red;\n}\n.imagePreview[data-v-5dab45fb]{\r\n  max-width: 300px;\n}\r\n", ""]);
 
 // exports
 
@@ -39470,7 +39494,7 @@ var render = function() {
                       show: _vm.showModal,
                       animation: "fade",
                       width: 600,
-                      height: 500
+                      height: 600
                     },
                     on: { hide: _vm.hideModal }
                   },
@@ -39611,11 +39635,34 @@ var render = function() {
           "div",
           { class: ["form-group", { "has-error": _vm.errors.image }] },
           [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { type: "file" },
-              on: { change: _vm.onFileChange }
-            }),
+            _vm.imagePreview
+              ? _c("div", { staticClass: "text-center" }, [
+                  _c("img", {
+                    staticClass: "imagePreview",
+                    attrs: { src: _vm.imagePreview }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.removeImage($event)
+                        }
+                      }
+                    },
+                    [_vm._v("Remover")]
+                  )
+                ])
+              : _c("div", [
+                  _c("input", {
+                    staticClass: "form-control",
+                    attrs: { type: "file" },
+                    on: { change: _vm.onFileChange }
+                  })
+                ]),
             _vm._v(" "),
             _vm.errors.image
               ? _c("div", [_vm._v(_vm._s(_vm.errors.image[0]))])
@@ -58177,15 +58224,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!****************************************************************************!*\
   !*** ./resources/js/components/admin/pages/products/ProductsComponent.vue ***!
   \****************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ProductsComponent_vue_vue_type_template_id_4df0c164_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ProductsComponent.vue?vue&type=template&id=4df0c164&scoped=true& */ "./resources/js/components/admin/pages/products/ProductsComponent.vue?vue&type=template&id=4df0c164&scoped=true&");
 /* harmony import */ var _ProductsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ProductsComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/pages/products/ProductsComponent.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _ProductsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _ProductsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -58215,7 +58261,7 @@ component.options.__file = "resources/js/components/admin/pages/products/Product
 /*!*****************************************************************************************************!*\
   !*** ./resources/js/components/admin/pages/products/ProductsComponent.vue?vue&type=script&lang=js& ***!
   \*****************************************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -58724,10 +58770,11 @@ var CONFIGS = {
       });
     });
   },
-  updateProduct: function updateProduct(context, params) {
+  updateProduct: function updateProduct(context, formData) {
     context.commit('CHANGE_PRELOADER', true);
+    formData.append('_method', 'PUT');
     return new Promise(function (resolve, reject) {
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.put("".concat(_config_configs__WEBPACK_IMPORTED_MODULE_1__["URL_BASE"]).concat(RESOURCE, "/").concat(params.id), params).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("".concat(_config_configs__WEBPACK_IMPORTED_MODULE_1__["URL_BASE"]).concat(RESOURCE, "/").concat(formData.get('id')), formData).then(function (response) {
         return resolve();
       })["catch"](function (error) {
         context.commit('CHANGE_PRELOADER', false);
@@ -58872,8 +58919,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\William\Documents\dev\projects\laravel-api\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\William\Documents\dev\projects\laravel-api\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\william.freire\Documents\dev\ambientededev\laravel-api\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\william.freire\Documents\dev\ambientededev\laravel-api\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

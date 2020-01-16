@@ -14,7 +14,7 @@
                 animation="fade"
                 @hide="hideModal"
                 :width="600"
-                :height="500"
+                :height="600"
               >
                 <productForm :product="product" :update="update" @success="success"></productForm>
               </vodal>

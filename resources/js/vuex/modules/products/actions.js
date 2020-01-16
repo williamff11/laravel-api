@@ -42,11 +42,12 @@ export default {
                 })
         })
     },
-    updateProduct(context, params) {
+    updateProduct(context, formData) {
         context.commit('CHANGE_PRELOADER', true)
 
+        formData.append('_method', 'PUT')
         return new Promise((resolve, reject) => {
-            axios.put(`${URL_BASE}${RESOURCE}/${params.id}`, params)
+            axios.post(`${URL_BASE}${RESOURCE}/${formData.get('id')}`, formData)
                 .then(response => resolve())
                 .catch(error => {
                     context.commit('CHANGE_PRELOADER', false)
