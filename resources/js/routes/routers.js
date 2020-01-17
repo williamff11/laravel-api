@@ -9,6 +9,7 @@ import EditCategoriesComponent from '../components/admin/pages/categories/EditCa
 import ProductsComponent from '../components/admin/pages/products/ProductsComponent'
 import SiteComponent from '../components/frontend/SiteComponent'
 import HomeComponent from '../components/frontend/pages/home/HomeComponent'
+import ContactCOmponent from '../components/frontend/pages/contact/ContactCOmponent'
 
 Vue.use(VueRouter)
 
@@ -17,7 +18,9 @@ const routes = [
         path: '/',
         component: SiteComponent,
         children: [
-            {path: '', component: HomeComponent, name: 'home'}
+            {path: '', component: HomeComponent, name: 'home'},
+            {path: 'contact', component: ContactCOmponent, name: 'contact'},
+
         ]
     },
     {
