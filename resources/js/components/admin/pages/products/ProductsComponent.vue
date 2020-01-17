@@ -28,14 +28,18 @@
           <table class="table table-hover">
             <thead class="thead-light">
               <tr>
-                <th scope="col">Imagem</th>
+                <th width="150" scope="col">Imagem</th>
                 <th scope="col">Nome</th>
                 <th scope="col">Ações</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(product, index) in products.data" :key="index">
-                <td>...</td>
+                <td>
+                  <div i-if="product.image">
+                  <img :src="[`/storage/products/${product.image}`]" :alt="product.name" class="img-list"> 
+                  </div>
+                </td>
                 <td>{{ product.name }}</td>
                 <td>
                   <a href="#" @click.prevent="edit(product.id)" class="btn btn-info">Editar</a>
@@ -164,4 +168,5 @@ export default {
 </script>
 
 <style scoped>
+.img-list{max-width: 100px;}
 </style>
