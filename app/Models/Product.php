@@ -10,7 +10,7 @@ class Product extends Model
 
     public function getResults($filter, $totalPage)
     {
-        if (!isset($filter['filter']) && !isset($filter['name']) && !isset($filter['description']))
+        if (!isset($filter['filter']) && !isset($filter['name']) && !isset($filter['description']) && !isset($filter['category_id']))
             return $this->orderBy('id', 'DESC')->paginate($totalPage);
 
         return $this->where(function ($query) use ($filter) {
@@ -22,6 +22,9 @@ class Product extends Model
 
             if (isset($filter['name']))
                 $query->where('name', $filter['name']);
+
+            if (isset($filter['category_id']))
+                $query->where('category_id', $filter['category_id']);
 
             if (isset($filter['description'])) {
                 $description = $filter['description'];

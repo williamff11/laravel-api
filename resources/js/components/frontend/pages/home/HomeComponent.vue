@@ -1,19 +1,27 @@
 <template>
   <div>
-    <h2>Sou a Home Page</h2>
+    <h2>Produtos</h2>
+
+    <br />
+    <listagemComponent></listagemComponent>
   </div>
 </template>
 
 <script>
+import ListagemComponent from "./partials/ListagemComponent";
+
 export default {
-  created() {
-    if (this.products.data.length == 0)
-      this.$store.dispatch('loadProducts', {});
+  data() {
+    return {
+      filter: ""
+    };
   },
-  computed: {
-    products() {
-      return this.$store.state.products.items;
-    }
+
+  components: {
+    listagemComponent: ListagemComponent
   }
 };
 </script>
+
+<style scoped>
+</style>

@@ -9,7 +9,9 @@ import EditCategoriesComponent from '../components/admin/pages/categories/EditCa
 import ProductsComponent from '../components/admin/pages/products/ProductsComponent'
 import SiteComponent from '../components/frontend/SiteComponent'
 import HomeComponent from '../components/frontend/pages/home/HomeComponent'
-import ContactCOmponent from '../components/frontend/pages/contact/ContactCOmponent'
+import ContactComponent from '../components/frontend/pages/contact/ContactComponent'
+import ProductDetail from '../components/frontend/pages/product/ProductDetail'
+import CartComponent from '../components/frontend/pages/cart/CartComponent'
 
 Vue.use(VueRouter)
 
@@ -18,8 +20,10 @@ const routes = [
         path: '/',
         component: SiteComponent,
         children: [
+            {path: 'carrinho', component: CartComponent, name: 'cart'},
+            {path: 'produto/:id', component: ProductDetail, name: 'product.datail', props: true},
             {path: '', component: HomeComponent, name: 'home'},
-            {path: 'contact', component: ContactCOmponent, name: 'contact'},
+            {path: 'contact', component: ContactComponent, name: 'contact'},
 
         ]
     },
