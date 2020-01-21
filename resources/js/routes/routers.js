@@ -17,12 +17,12 @@ import LoginComponent from '../components/frontend/pages/auth/LoginComponent'
 Vue.use(VueRouter)
 
 const routes = [
-    { path: '/login', component: LoginComponent, name: 'login' },
 
     {
         path: '/',
         component: SiteComponent,
         children: [
+            { path: 'login', component: LoginComponent, name: 'login' },
             { path: 'carrinho', component: CartComponent, name: 'cart' },
             { path: 'produto/:id', component: ProductDetail, name: 'product.datail', props: true },
             { path: '', component: HomeComponent, name: 'home' },

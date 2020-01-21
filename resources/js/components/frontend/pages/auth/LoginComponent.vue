@@ -1,16 +1,27 @@
 <template>
   <div class="container">
+    <br />
     <div class="row justify-content-center">
       <div class="col-8">
         <div class="card">
           <div class="card-header">Login</div>
           <div class="card-body">
-            <form class="form">
+            <form class="form" @submit.prevent="login">
               <div class="form-group">
-                <input type="email" class="form-control" placeholder="E-mail" />
+                <input
+                  type="email"
+                  v-model="formData.email"
+                  class="form-control"
+                  placeholder="E-mail"
+                />
               </div>
               <div class="form-group">
-                <input type="password" class="form-control" placeholder="Senha" />
+                <input
+                  type="password"
+                  v-model="formData.password"
+                  class="form-control"
+                  placeholder="Senha"
+                />
               </div>
               <div class="form-group">
                 <button type="submit" class="btn btn-success">Entrar</button>
@@ -22,3 +33,22 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      formData: {
+        email: "",
+        password: ""
+      }
+    };
+  },
+
+  methods: {
+    login() {
+      this.$store.dispatch("login", this.formData);
+    }
+  }
+};
+</script>
