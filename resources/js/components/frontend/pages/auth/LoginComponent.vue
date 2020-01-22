@@ -47,7 +47,8 @@ export default {
 
   methods: {
     login() {
-      this.$store.dispatch("login", this.formData);
+      this.$store.dispatch("login", this.formData)
+                  .then(() => this.$router.push({name: 'admin.dashboard'}))
     }
   }
 };

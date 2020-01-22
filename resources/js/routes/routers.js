@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import store from '../vuex/store'
+
 import AdminComponent from '../components/admin/AdminComponent'
 import CategoriesComponent from '../components/admin/pages/categories/CategoriesComponent'
 import DashboardComponent from '../components/admin/pages/dashboard/DashboardComponent'
@@ -33,6 +35,7 @@ const routes = [
     {
         path: '/admin',
         component: AdminComponent,
+        meta: { auth: true },
         children: [
             { path: '', component: DashboardComponent, name: 'admin.dashboard' },
             { path: 'categorias', component: CategoriesComponent, name: 'admin.categories' },
@@ -47,5 +50,19 @@ const routes = [
 const router = new VueRouter({
     routes
 })
+
+router.beforeEach((to, from, next) => {
+    if (to.meta.auth && !store.state.auth.authenticated) {
+        return router.push({ name: 'login' })
+    }
+
+    if (to.matched.some(record => record.meta.auth) && !store.state.auth.authenticated) {
+
+        return router.push({ name: 'login' })
+    }
+
+    next()
+})
+
 
 export default router
