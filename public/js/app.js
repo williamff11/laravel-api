@@ -2663,10 +2663,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
     cart: function cart() {
       return this.$store.state.cart.products;
+    },
+    auth: function auth() {
+      return this.$store.state.auth.user;
     }
   }
 });
@@ -40448,6 +40454,7 @@ var render = function() {
     _vm._v(" "),
     _c(
       "li",
+      { staticClass: "nav-item" },
       [
         _c(
           "router-link",
@@ -40460,6 +40467,7 @@ var render = function() {
     _vm._v(" "),
     _c(
       "li",
+      { staticClass: "nav-item" },
       [
         _c(
           "router-link",
@@ -40470,17 +40478,34 @@ var render = function() {
       1
     ),
     _vm._v(" "),
-    _c(
-      "li",
-      [
-        _c(
-          "router-link",
-          { staticClass: "nav-link", attrs: { to: { name: "login" } } },
-          [_vm._v("Login")]
+    _vm.auth.name
+      ? _c(
+          "li",
+          { staticClass: "nav-item" },
+          [
+            _c(
+              "router-link",
+              {
+                staticClass: "nav-link",
+                attrs: { to: { name: "admin.dashboard" } }
+              },
+              [_vm._v("Olá, " + _vm._s(_vm.auth.name))]
+            )
+          ],
+          1
         )
-      ],
-      1
-    )
+      : _c(
+          "li",
+          { staticClass: "nav-item" },
+          [
+            _c(
+              "router-link",
+              { staticClass: "nav-link", attrs: { to: { name: "login" } } },
+              [_vm._v("Login")]
+            )
+          ],
+          1
+        )
   ])
 }
 var staticRenderFns = []
@@ -58810,7 +58835,7 @@ var app = new Vue({
 _vuex_store__WEBPACK_IMPORTED_MODULE_2__["default"].dispatch('loadCategories');
 _vuex_store__WEBPACK_IMPORTED_MODULE_2__["default"].dispatch('checkLogin').then(function () {
   return _routes_routers__WEBPACK_IMPORTED_MODULE_1__["default"].push({
-    name: 'admin.dashboard'
+    name: _vuex_store__WEBPACK_IMPORTED_MODULE_2__["default"].state.auth.urlBack
   });
 }); // store.dispatch('verifyCart')
 
@@ -58849,20 +58874,6 @@ try {
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
-// import Echo from 'laravel-echo';
-// window.Pusher = require('pusher-js');
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: process.env.MIX_PUSHER_APP_KEY,
-//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-//     encrypted: true
-// });
-
 var token = localStorage.getItem(_config_configs__WEBPACK_IMPORTED_MODULE_0__["NAME_TOKEN"]);
 if (token) window.axios.defaults.headers.common['Authorization'] = "Bearer ".concat(token);
 
@@ -60698,7 +60709,10 @@ var routes = [{
   children: [{
     path: 'login',
     component: _components_frontend_pages_auth_LoginComponent__WEBPACK_IMPORTED_MODULE_14__["default"],
-    name: 'login'
+    name: 'login',
+    meta: {
+      auth: false
+    }
   }, {
     path: 'carrinho',
     component: _components_frontend_pages_cart_CartComponent__WEBPACK_IMPORTED_MODULE_13__["default"],
@@ -60751,6 +60765,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
 });
 router.beforeEach(function (to, from, next) {
   if (to.meta.auth && !_vuex_store__WEBPACK_IMPORTED_MODULE_2__["default"].state.auth.authenticated) {
+    _vuex_store__WEBPACK_IMPORTED_MODULE_2__["default"].commit('CHANGE_URL_BACK', to.name);
     return router.push({
       name: 'login'
     });
@@ -60759,8 +60774,15 @@ router.beforeEach(function (to, from, next) {
   if (to.matched.some(function (record) {
     return record.meta.auth;
   }) && !_vuex_store__WEBPACK_IMPORTED_MODULE_2__["default"].state.auth.authenticated) {
+    _vuex_store__WEBPACK_IMPORTED_MODULE_2__["default"].commit('CHANGE_URL_BACK', to.name);
     return router.push({
       name: 'login'
+    });
+  }
+
+  if (to.meta.hasOwnProperty('auth') && !to.meta.auth && _vuex_store__WEBPACK_IMPORTED_MODULE_2__["default"].state.auth.authenticated) {
+    return router.push({
+      name: 'admin.dashboard'
     });
   }
 
@@ -60824,11 +60846,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   state: {
     user: {},
-    authenticated: false
+    authenticated: false,
+    urlBack: 'home'
   },
   mutations: {
     AUTH_USER_OK: function AUTH_USER_OK(state, user) {
       state.authenticated = true, state.user = user;
+    },
+    CHANGE_URL_BACK: function CHANGE_URL_BACK(state, url) {
+      state.urlBack = url;
     }
   },
   actions: {
@@ -60844,6 +60870,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     checkLogin: function checkLogin(context) {
+      context.commit('CHANGE_PRELOADER', true);
       return new Promise(function (resolve, reject) {
         var token = localStorage.getItem(_config_configs__WEBPACK_IMPORTED_MODULE_0__["NAME_TOKEN"]);
         if (!token) return reject();
@@ -60852,6 +60879,8 @@ __webpack_require__.r(__webpack_exports__);
           resolve();
         })["catch"](function () {
           return reject();
+        })["finally"](function () {
+          return context.commit('CHANGE_PRELOADER', false);
         });
       });
     }
@@ -61179,8 +61208,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\william.freire\Documents\dev\ambientededev\laravel-api\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\william.freire\Documents\dev\ambientededev\laravel-api\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\William\Documents\dev\projects\laravel-api\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\William\Documents\dev\projects\laravel-api\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

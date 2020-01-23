@@ -24,7 +24,7 @@ const routes = [
         path: '/',
         component: SiteComponent,
         children: [
-            { path: 'login', component: LoginComponent, name: 'login' },
+            { path: 'login', component: LoginComponent, name: 'login', meta: { auth: false } },
             { path: 'carrinho', component: CartComponent, name: 'cart' },
             { path: 'produto/:id', component: ProductDetail, name: 'product.datail', props: true },
             { path: '', component: HomeComponent, name: 'home' },
@@ -53,12 +53,20 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     if (to.meta.auth && !store.state.auth.authenticated) {
+        store.commit('CHANGE_URL_BACK', to.name)
+
         return router.push({ name: 'login' })
     }
 
     if (to.matched.some(record => record.meta.auth) && !store.state.auth.authenticated) {
+        store.commit('CHANGE_URL_BACK', to.name)
 
         return router.push({ name: 'login' })
+    }
+
+    if (to.meta.hasOwnProperty('auth') && !to.meta.auth && store.state.auth.authenticated) {
+        return router.push({ name: 'admin.dashboard' })
+
     }
 
     next()

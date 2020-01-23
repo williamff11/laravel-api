@@ -4,13 +4,18 @@ export default {
     state: {
         user: {},
         authenticated: false,
+        urlBack: 'home',
     },
 
     mutations: {
         AUTH_USER_OK(state, user) {
             state.authenticated = true,
                 state.user = user
-        }
+        },
+
+        CHANGE_URL_BACK(state, url) {
+            state.urlBack = url
+        },
     },
 
     actions: {
@@ -28,6 +33,8 @@ export default {
         },
 
         checkLogin(context) {
+            context.commit('CHANGE_PRELOADER', true)
+
             return new Promise((resolve, reject) => {
                 const token = localStorage.getItem(NAME_TOKEN)
                 if (!token)
@@ -40,6 +47,7 @@ export default {
                         resolve()
                     })
                     .catch(() => reject())
+                    .finally(() => context.commit('CHANGE_PRELOADER', false))
             })
         }
     }
