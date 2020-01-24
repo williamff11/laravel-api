@@ -1858,10 +1858,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
     totalCategories: function totalCategories() {
       return this.$store.state.categories.items.data.length;
+    },
+    user: function user() {
+      return this.$store.state.auth.user;
+    }
+  },
+  methods: {
+    logout: function logout() {
+      this.$store.dispatch('logout');
+      this.$router.push({
+        name: 'login'
+      });
     }
   }
 });
@@ -2749,6 +2764,8 @@ __webpack_require__.r(__webpack_exports__);
         return _this.$router.push({
           name: 'admin.dashboard'
         });
+      })["catch"](function () {
+        _this.$snotify.error('Dados Inválidos', 'Falha ao Acessar');
       });
     }
   }
@@ -39500,7 +39517,27 @@ var render = function() {
           )
         ],
         1
-      )
+      ),
+      _vm._v(" "),
+      _c("li", [
+        _c("a", { staticClass: "nav-link" }, [
+          _vm._v(_vm._s(_vm.user.name) + " ("),
+          _c(
+            "a",
+            {
+              attrs: { href: "#" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.logout($event)
+                }
+              }
+            },
+            [_vm._v("Sair")]
+          ),
+          _vm._v(")")
+        ])
+      ])
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "container" }, [_c("router-view")], 1)
@@ -60890,9 +60927,9 @@ __webpack_require__.r(__webpack_exports__);
       context.commit('CHANGE_PRELOADER', true);
       return axios.post('/api/auth', params).then(function (response) {
         context.commit('AUTH_USER_OK', response.data.user);
-        localStorage.setItem(_config_configs__WEBPACK_IMPORTED_MODULE_0__["NAME_TOKEN"], response.data.token);
-      })["catch"](function (errors) {
-        return reject(errors);
+        var token = response.data.token;
+        localStorage.setItem(_config_configs__WEBPACK_IMPORTED_MODULE_0__["NAME_TOKEN"], token);
+        window.axios.defaults.headers.common['Authorization'] = "Bearer ".concat(token);
       })["finally"](function () {
         return context.commit('CHANGE_PRELOADER', false);
       });
@@ -61240,8 +61277,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\William\Documents\dev\projects\laravel-api\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\William\Documents\dev\projects\laravel-api\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\william.freire\Documents\dev\ambientededev\laravel-api\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\william.freire\Documents\dev\ambientededev\laravel-api\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

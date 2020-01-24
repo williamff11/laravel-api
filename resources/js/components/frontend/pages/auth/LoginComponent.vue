@@ -49,6 +49,9 @@ export default {
     login() {
       this.$store.dispatch("login", this.formData)
                   .then(() => this.$router.push({name: 'admin.dashboard'}))
+                  .catch(() => {
+                    this.$snotify.error('Dados Inválidos', 'Falha ao Acessar')
+                  })
     }
   }
 };

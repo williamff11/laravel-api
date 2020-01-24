@@ -6,17 +6,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use App\User;
+use App\Http\Requests\StoreUpdateUserFormRequest;
 
 class AuthApiController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['authenticate']]);
+        $this->middleware('auth:api', ['except' => ['authenticate', 'register']]);
     }
-    public function authenticate(Request $request)
+    public function authenticate()
     {
         // grab credentials from the request
-        $credentials = $request->only('email', 'password');
+        $credentials = request()->only('email', 'password');
 
         try {
             // attempt to verify the credentials and create a token for the user
@@ -38,21 +40,11 @@ class AuthApiController extends Controller
     // somewhere in your controller
     public function getAuthenticatedUser()
     {
-        try {
+        $response = $this->getUser();
+        if ($response['status'] !=200)
+            return response()->json([$response['response']], $response['status']);
 
-            if (!$user = JWTAuth::parseToken()->authenticate()) {
-                return response()->json(['user_not_found'], 404);
-            }
-        } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-
-            return response()->json(['token_expired'], $e->getStatusCode());
-        } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
-
-            return response()->json(['token_invalid'], $e->getStatusCode());
-        } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
-
-            return response()->json(['token_absent'], $e->getStatusCode());
-        }
+        $user = $response['response'];
 
         // the token is valid and we have found the user via the sub claim
         return response()->json(compact('user'));
@@ -69,5 +61,66 @@ class AuthApiController extends Controller
             return response()->json(['toekn_invalid'], $e->getStatusCode());
         }
         return response()->json(compact('token'));
+    }
+
+    public function register(StoreUpdateUserFormRequest $request, User $user)
+    {
+        $data = $request->all();
+        $data['password'] = bcrypt($data['password']);
+        $user->create($data);
+
+        return $this->authenticate();
+    }
+
+    public function update(StoreUpdateUserFormRequest $request)
+    {
+        $response = $this->getUser();
+        if ($response['status'] !=200)
+            return response()->json([$response['response']], $response['status']);
+
+        $user = $response['response'];
+        $user->update($request->all());
+
+        return response()->json(compact('user'));
      }
+
+    public function getUser()
+    {
+        try {
+
+            if (!$user = JWTAuth::parseToken()->authenticate()) {
+                // return response()->json(['user_not_found'], 404);
+                return [
+                    'response' => 'user_not_found',
+                    'status'   => 404
+                ];
+            }
+        } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+
+            // return response()->json(['token_expired'], $e->getStatusCode());
+            return [
+                'response' => 'token_expired',
+                'status'   => $e->getStatusCode()
+            ];
+        } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+
+            // return response()->json(['token_invalid'], $e->getStatusCode());
+            return [
+                'response' => 'token_invalid',
+                'status'   => $e->getStatusCode()
+            ];
+        } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
+
+            // return response()->json(['token_absent'], $e->getStatusCode());
+            return [
+                'response' => 'token_absent',
+                'status'   => $e->getStatusCode()
+            ];
+        }
+
+        return [
+            'response' => $user,
+            'status'   => 200
+        ];
+    }
 }

@@ -17,7 +17,7 @@ export default {
             state.urlBack = url
         },
 
-        AUTH_USER_LOGOUT (state){
+        AUTH_USER_LOGOUT(state) {
             state.user = {}
             state.authenticated = false
             state.urlBack = 'home'
@@ -32,9 +32,11 @@ export default {
                 .then(response => {
                     context.commit('AUTH_USER_OK', response.data.user)
 
-                    localStorage.setItem(NAME_TOKEN, response.data.token)
+                    const token = response.data.token
+
+                    localStorage.setItem(NAME_TOKEN, token)
+                    window.axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
                 })
-                .catch(errors => reject(errors))
                 .finally(() => context.commit('CHANGE_PRELOADER', false))
         },
 
@@ -56,7 +58,7 @@ export default {
                     .finally(() => context.commit('CHANGE_PRELOADER', false))
             })
         },
-        logout (context) {
+        logout(context) {
             localStorage.removeItem(NAME_TOKEN)
 
             context.commit('AUTH_USER_LOGOUT')
