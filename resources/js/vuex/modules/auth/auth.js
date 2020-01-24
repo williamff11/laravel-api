@@ -16,6 +16,12 @@ export default {
         CHANGE_URL_BACK(state, url) {
             state.urlBack = url
         },
+
+        AUTH_USER_LOGOUT (state){
+            state.user = {}
+            state.authenticated = false
+            state.urlBack = 'home'
+        }
     },
 
     actions: {
@@ -49,6 +55,11 @@ export default {
                     .catch(() => reject())
                     .finally(() => context.commit('CHANGE_PRELOADER', false))
             })
+        },
+        logout (context) {
+            localStorage.removeItem(NAME_TOKEN)
+
+            context.commit('AUTH_USER_LOGOUT')
         }
     }
 }

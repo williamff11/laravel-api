@@ -16,6 +16,10 @@ class ProductController extends Controller
     public function __construct(Product $product)
     {
         $this->product = $product;
+
+        $this->middleware('auth:api')->except([
+            'index', 'show'
+        ]);
     }
     public function index(Product $product, Request $request)
     {

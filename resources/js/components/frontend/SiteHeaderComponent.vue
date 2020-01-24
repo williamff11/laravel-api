@@ -10,23 +10,31 @@
       <router-link class="nav-link" :to="{name: 'cart'}">Carrinho ({{ cart.length }})</router-link>
     </li>
     <li class="nav-item" v-if="auth.name">
-      <router-link class="nav-link" :to="{name: 'admin.dashboard'}">Olá, {{auth.name}}</router-link>
+      <router-link class="nav-link" :to="{name: 'admin.dashboard'}">
+        Olá, {{auth.name}}! (
+        <a @click.prevent="logout">Sair</a>)
+      </router-link>
     </li>
     <li class="nav-item" v-else>
       <router-link class="nav-link" :to="{name: 'login'}">Login</router-link>
     </li>
   </ul>
-</template>
+</template> 
 
 <script>
 export default {
   computed: {
-    cart () {
-      return this.$store.state.cart.products
+    cart() {
+      return this.$store.state.cart.products;
     },
-    auth () {
-      return this.$store.state.auth.user
+    auth() {
+      return this.$store.state.auth.user;
+    }
+  },
+  methods: {
+    logout () {
+      this.$store.dispatch('logout')
     }
   }
-}
+};
 </script>

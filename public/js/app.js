@@ -2666,6 +2666,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
     cart: function cart() {
@@ -2673,6 +2676,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     auth: function auth() {
       return this.$store.state.auth.user;
+    }
+  },
+  methods: {
+    logout: function logout() {
+      this.$store.dispatch('logout');
     }
   }
 });
@@ -40489,7 +40497,22 @@ var render = function() {
                 staticClass: "nav-link",
                 attrs: { to: { name: "admin.dashboard" } }
               },
-              [_vm._v("Olá, " + _vm._s(_vm.auth.name))]
+              [
+                _vm._v("\n      Olá, " + _vm._s(_vm.auth.name) + "! (\n      "),
+                _c(
+                  "a",
+                  {
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.logout($event)
+                      }
+                    }
+                  },
+                  [_vm._v("Sair")]
+                ),
+                _vm._v(")\n    ")
+              ]
             )
           ],
           1
@@ -60855,6 +60878,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     CHANGE_URL_BACK: function CHANGE_URL_BACK(state, url) {
       state.urlBack = url;
+    },
+    AUTH_USER_LOGOUT: function AUTH_USER_LOGOUT(state) {
+      state.user = {};
+      state.authenticated = false;
+      state.urlBack = 'home';
     }
   },
   actions: {
@@ -60883,6 +60911,10 @@ __webpack_require__.r(__webpack_exports__);
           return context.commit('CHANGE_PRELOADER', false);
         });
       });
+    },
+    logout: function logout(context) {
+      localStorage.removeItem(_config_configs__WEBPACK_IMPORTED_MODULE_0__["NAME_TOKEN"]);
+      context.commit('AUTH_USER_LOGOUT');
     }
   }
 });
