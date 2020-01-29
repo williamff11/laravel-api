@@ -1,10 +1,17 @@
 <?php
 
-Route::POST('auth', 'Auth\AuthApiController@authenticate');
-Route::POST('auth-refresh', 'Auth\AuthApiController@refreshToken');
-Route::get('me', 'Auth\AuthApiController@getAuthenticatedUser');
-Route::post('register', 'Auth\AuthApiController@register');
-Route::put('update', 'Auth\AuthApiController@update');
+
+// auth
+Route::group([
+    'namespace' => 'Auth\Api',
+], function () {
+    Route::POST('auth', 'AuthApiController@authenticate');
+    Route::POST('auth-refresh', 'AuthApiController@refreshToken');
+    Route::get('me', 'AuthApiController@getAuthenticatedUser');
+    Route::post('register', 'ProfileApiController@register');
+    Route::put('update', 'ProfileApiController@update');
+});
+
 
 //version1
 Route::group([

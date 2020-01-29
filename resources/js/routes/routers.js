@@ -15,6 +15,8 @@ import ContactComponent from '../components/frontend/pages/contact/ContactCompon
 import ProductDetail from '../components/frontend/pages/product/ProductDetail'
 import CartComponent from '../components/frontend/pages/cart/CartComponent'
 import LoginComponent from '../components/frontend/pages/auth/LoginComponent'
+import RegisterComponent from '../components/frontend/pages/user/RegisterComponent'
+import ProfileComponent from '../components/frontend/pages/user/ProfileComponent'
 
 Vue.use(VueRouter)
 
@@ -25,6 +27,8 @@ const routes = [
         component: SiteComponent,
         children: [
             { path: 'login', component: LoginComponent, name: 'login', meta: { auth: false } },
+            { path: 'register', component: RegisterComponent, name: 'register', meta: { auth: false } },
+            { path: 'meu-perfil', component: ProfileComponent, name: 'profile', meta: { auth: true } },
             { path: 'carrinho', component: CartComponent, name: 'cart' },
             { path: 'produto/:id', component: ProductDetail, name: 'product.datail', props: true },
             { path: '', component: HomeComponent, name: 'home' },

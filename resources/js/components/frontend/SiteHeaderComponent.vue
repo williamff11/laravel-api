@@ -9,11 +9,21 @@
     <li class="nav-item">
       <router-link class="nav-link" :to="{name: 'cart'}">Carrinho ({{ cart.length }})</router-link>
     </li>
-    <li class="nav-item" v-if="auth.name">
-      <router-link class="nav-link" :to="{name: 'admin.dashboard'}">
-        Olá, {{auth.name}}! (
-        <a @click.prevent="logout">Sair</a>)
-      </router-link>
+    <li class="nav-item dropdown show" v-if="auth.name">
+      <a
+        class="nav-link dropdown-toggle"
+        href="#"
+        role="button"
+        id="dropdownMenuLink"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >Olá {{auth.name}}</a>
+
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <router-link :to="{name: 'profile'}" class="dropdown-item" href="#">Meu Perfil</router-link>
+        <a class="dropdown-item" @click.prevent="logout">Sair</a>
+      </div>
     </li>
     <li class="nav-item" v-else>
       <router-link class="nav-link" :to="{name: 'login'}">Login</router-link>
@@ -32,8 +42,8 @@ export default {
     }
   },
   methods: {
-    logout () {
-      this.$store.dispatch('logout')
+    logout() {
+      this.$store.dispatch("logout");
     }
   }
 };

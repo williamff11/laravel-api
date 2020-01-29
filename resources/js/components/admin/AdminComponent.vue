@@ -5,15 +5,30 @@
         <router-link class="nav-link" :to="{name: 'admin.dashboard'}">Dashboard</router-link>
       </li>
       <li>
-        <router-link class="nav-link" :to="{name: 'admin.categories'}">Categorias ({{totalCategories}})</router-link>
+        <router-link
+          class="nav-link"
+          :to="{name: 'admin.categories'}"
+        >Categorias ({{totalCategories}})</router-link>
       </li>
       <li>
         <router-link class="nav-link" :to="{name: 'admin.products'}">Produtos</router-link>
       </li>
-      <li>
-        <a class="nav-link">{{user.name}} (<a href="#" @click.prevent="logout">Sair</a>)</a>
+      <li class="nav-item dropdown show" v-if="user.name">
+        <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          role="button"
+          id="dropdownMenuLink"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >Olá {{user.name}}</a>
+
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <router-link :to="{name: 'profile'}" class="dropdown-item" href="#">Meu Perfil</router-link>
+          <a class="dropdown-item" @click.prevent="logout">Sair</a>
+        </div>
       </li>
-      
     </ul>
 
     <div class="container">
@@ -28,15 +43,15 @@ export default {
     totalCategories() {
       return this.$store.state.categories.items.data.length;
     },
-    user () {
-      return this.$store.state.auth.user
+    user() {
+      return this.$store.state.auth.user;
     }
   },
   methods: {
-    logout () {
-      this.$store.dispatch('logout')
+    logout() {
+      this.$store.dispatch("logout");
 
-      this.$router.push({name: 'login'})
+      this.$router.push({ name: "login" });
     }
   }
 };
