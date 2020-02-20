@@ -22,4 +22,6 @@ Route::group([
     Route::get('categories/{id}/products', 'CategoryController@products');
     Route::apiResource('categories', 'CategoryController');
     Route::apiResource('products', 'ProductController');
+
+    // Route::get('reports-products', 'ReportController@products');
 });

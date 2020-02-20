@@ -11,6 +11,8 @@
 |
 */
 
+Route::get('reports-products', 'Api\v1\ReportController@products');
+
 Route::get('/', function () {
     return view('welcome');
 });

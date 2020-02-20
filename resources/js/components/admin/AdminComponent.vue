@@ -13,6 +13,9 @@
       <li>
         <router-link class="nav-link" :to="{name: 'admin.products'}">Produtos</router-link>
       </li>
+      <li>
+        <router-link class="nav-link" :to="{name: 'products.reports'}">Gráficos</router-link>
+      </li>
       <li class="nav-item dropdown show" v-if="user.name">
         <a
           class="nav-link dropdown-toggle"

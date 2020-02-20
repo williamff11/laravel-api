@@ -9,6 +9,7 @@ import DashboardComponent from '../components/admin/pages/dashboard/DashboardCom
 import AddCategoriesComponent from '../components/admin/pages/categories/AddCategoriesComponent'
 import EditCategoriesComponent from '../components/admin/pages/categories/EditCategoriesComponent'
 import ProductsComponent from '../components/admin/pages/products/ProductsComponent'
+import ProductReports from '../components/admin/pages/reports/ProductReports'
 import SiteComponent from '../components/frontend/SiteComponent'
 import HomeComponent from '../components/frontend/pages/home/HomeComponent'
 import ContactComponent from '../components/frontend/pages/contact/ContactComponent'
@@ -46,7 +47,8 @@ const routes = [
             { path: 'categorias/create', component: AddCategoriesComponent, name: 'admin.categories.create' },
             { path: 'categorias/:id/edit', component: EditCategoriesComponent, name: 'admin.categories.edit', props: true },
 
-            { path: 'products', component: ProductsComponent, name: 'admin.products' }
+            { path: 'products', component: ProductsComponent, name: 'admin.products' },
+            { path: 'products-reports', component: ProductReports, name: 'products.reports' }
         ]
     },
 ]
